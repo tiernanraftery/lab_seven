@@ -1,17 +1,21 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import NavigationBar from './components/NavigationBar';
 import Header from './components/header';
-import Content from './components/content';
 import Footer from './components/footer';
-function App() {
-  let x = 5;
+import Content from './components/content';
 
+function App() {
   return (
-    <div className="App">
-      <Header></Header>
-      <Content />
-      <Footer></Footer>
-    </div>
+    <Router>
+      <NavigationBar />
+      <Routes>
+        <Route path="/" element={<Content />} />
+        <Route path="/read" element={<h1>Read Component</h1>} />
+        <Route path="/create" element={<h1>Create Component</h1>} />
+      </Routes>
+      <Footer />
+    </Router>
   );
 }
 
