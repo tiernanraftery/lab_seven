@@ -1,6 +1,6 @@
+# Lab 3: React(Props) - Representation & Querying
 
-
-# Lab 2: Data Representation & Querying
+This lab involves building upon previous React applications to implement props-based data handling and querying using components.
 
 ## Exercise 1: Setting up Git Repository
 
@@ -30,177 +30,174 @@ git remote add origin <your-github-repo-url>
 git push -u origin main
 ```
 
-## Exercise 2: Creating and Modifying a React Application
+## Exercise 2: Creating New Components
 
-**Set Up React Application:** Use the command `npx create-react-app` to create a new React app. This will scaffold the project structure, installing all necessary dependencies automatically. For more details, check out the official [Create React App documentation](https://create-react-app.dev/docs/getting-started/).
+In the last lab, we created a React application with client-side routing and a Bootstrap navigation bar. If you didn’t finish last week’s lab, you can clone the final solution from the following repository:  
+[GitHub Repository - Lab Two](https://github.com/Data-Rep-MERN-Application/lab_two)
 
-```bash
-npx create-react-app my-app
-cd my-app
-npm start
+### Task 1:
+Add two new function components named `Read` and `Create` to your application. Each component should have an `h3` tag with a message indicating the component (e.g., "Hello from the Read component"). Update the navigation bar to include links to these components.
+
+### Task 2:
+In the `Read` component, add a constant variable that holds the following JSON data for movies:
+
+```json
+[
+  {
+    "Title": "Avengers: Infinity War",
+    "Year": "2018",
+    "imdbID": "tt4154756",
+    "Type": "movie",
+    "Poster": "https://m.media-amazon.com/images/M/MV5BMjMxNjY2MDU1OV5BMl5BanBnXkFtZTgwNzY1MTUwNTM@._V1_SX300.jpg"
+  },
+  {
+    "Title": "Captain America: Civil War",
+    "Year": "2016",
+    "imdbID": "tt3498820",
+    "Type": "movie",
+    "Poster": "https://m.media-amazon.com/images/M/MV5BMjQ0MTgyNjAxMV5BMl5BanBnXkFtZTgwNjUzMDkyODE@._V1_SX300.jpg"
+  },
+  {
+    "Title": "World War Z",
+    "Year": "2013",
+    "imdbID": "tt0816711",
+    "Type": "movie",
+    "Poster": "https://m.media-amazon.com/images/M/MV5BNDQ4YzFmNzktMmM5ZC00MDZjLTk1OTktNDE2ODE4YjM2MjJjXkEyXkFqcGdeQXVyNTA4NzY1MzY@._V1_SX300.jpg"
+  }
+]
 ```
 
-**Displaying "Hello World":** Modify the `App.js` file inside the `src` directory to display a basic "Hello World" message in the browser:
+Pass this data to a new `Movies` component and display it.
 
-```jsx
-return (
-  <div>
-    <h1>Hello World!</h1>
-  </div>
-);
-```
+### Task 3:
+Add another functional component named `MovieItem`. This component will be responsible for rendering individual movie details. Use the `map()` function in the `Movies` component to iterate through the movie array and pass each movie as props to the `MovieItem` component.
 
-**Displaying Current Time:** Dynamically display the current time using JavaScript's `new Date()` method. The `.toLocaleTimeString()` method is used to format the time as a string:
+---
 
-```jsx
-return (
-  <div>
-    <h1>Hello World!</h1>
-    <h2>It is {new Date().toLocaleTimeString()}.</h2>
-  </div>
-);
-```
+### **Detailed Explanation: Props**
 
-## Exercise 3: Componentization
+In React, **props** (short for properties) are a mechanism for passing data from a parent component to a child component. This allows components to be dynamic and reusable. The parent component passes values to the child component, which can then use that data to render dynamic content.
 
-**Create `Content.js`:** Move the "Hello World" and time logic into a reusable component, `Content.js`, which is placed inside a `components/` folder. This separates concerns and makes your app modular:
-
-```jsx
-import React from 'react';
-
-const Content = () => {
-  return (
-    <div>
-      <h1>Hello World!</h1>
-      <h2>It is {new Date().toLocaleTimeString()}.</h2>
-    </div>
-  );
-}
-
-export default Content;
-```
-
-**Create `Header.js` and `Footer.js`:** Create separate header and footer components to further modularize the app:
-
-```jsx
-const Header = () => {
-  return <h1>My Header in another component</h1>;
-};
-
-export default Header;
-```
-
-```jsx
-const Footer = () => {
-  return <h3>My Footer in another component</h3>;
-};
-
-export default Footer;
-```
-
-**Update `App.js`:** Finally, import the components into `App.js` and compose them together in the return block:
-
-```jsx
-import Header from './components/Header';
-import Content from './components/Content';
-import Footer from './components/Footer';
-
-function App() {
-  return (
-    <div>
-      <Header />
-      <Content />
-      <Footer />
-    </div>
-  );
-}
-
-export default App;
-```
-
-## Exercise 4: Adding Bootstrap
-
-**Install Bootstrap:** Use npm to install Bootstrap and React-Bootstrap. This will allow you to use prebuilt Bootstrap styles and components in your React app:
-
-```bash
-npm install react-bootstrap bootstrap
-```
-
-After installing, import Bootstrap's CSS in the `src/index.js` file:
+For example, in the `Read` component, the movie data is passed to the `Movies` component via props:
 
 ```javascript
-import 'bootstrap/dist/css/bootstrap.min.css';
+<Movies myMovies={data} />
 ```
 
-For more details, refer to the [official React Bootstrap documentation](https://react-bootstrap.github.io/docs/getting-started/introduction).
+Here, `myMovies` is the prop name, and the `data` is the value being passed. Inside the `Movies` component, we access this data via `props.myMovies`:
 
-## Exercise 5: Navigation Bar and Routing
+```javascript
+function Movies(props) {
+  return props.myMovies.map((movie) => (
+    <MovieItem mymovie={movie} key={movie.imdbID} />
+  ));
+}
+```
 
-**Add a Bootstrap Navbar:** Use React-Bootstrap's `Navbar` component to create a responsive navigation bar. Use React Router's `Link` to handle navigation between different pages. You can find more information on the `Navbar` in the [Navbar component section of the React Bootstrap documentation](https://react-bootstrap.github.io/docs/components/navbar).
+The `Movies` component now passes the `movie` data down to the `MovieItem` component as another prop called `mymovie`:
 
-Update the `Navbar` to use a dark theme by changing the background color to `primary` and adding `data-bs-theme="dark"`:
+```javascript
+<MovieItem mymovie={movie} key={movie.imdbID} />
+```
 
-```jsx
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
+Props allow for clear communication between components, keeping components modular and reusable. The key thing to remember about props is that they are **read-only**. A component receiving props should not modify them but can use them for rendering.
 
+---
 
-const NavigationBar = () => {
+### **Detailed Explanation: useEffect() Hook**
+
+The `useEffect()` hook is one of React's most important hooks for handling side effects in functional components. A side effect is anything that affects something outside the scope of the function being executed, such as data fetching, subscriptions, or manually changing the DOM.
+
+In this lab, `useEffect()` is used to log props to the console whenever the component mounts or updates:
+
+```javascript
+useEffect(() => {
+  console.log("Movies:", props.myMovies);
+}, []);
+```
+
+### Key points about `useEffect()`:
+
+1. **Runs after render:**  
+   By default, `useEffect()` runs after every render. If no dependency array is provided (like `[]`), it will execute after every render cycle of the component.
+
+2. **Dependency array:**  
+   If you provide a dependency array as the second argument to `useEffect()`, it will only run if the values in that array change. For example, to only run the effect when `props.myMovies` changes, we could write:
+
+   ```javascript
+   useEffect(() => {
+     console.log("Movies:", props.myMovies);
+   }, [props.myMovies]);
+   ```
+
+3. **Cleanup:**  
+   `useEffect()` can return a cleanup function, which is run when the component unmounts or before the next effect is executed. This is useful for cleaning up subscriptions or resetting state:
+
+   ```javascript
+   useEffect(() => {
+     const subscription = someAPICall();
+     
+     return () => {
+       subscription.unsubscribe(); // Cleanup when component unmounts
+     };
+   }, []);
+   ```
+
+### Example with `useEffect` in the `MovieItem` Component:
+
+```javascript
+import { useEffect } from "react";
+import Card from 'react-bootstrap/Card';
+
+function MovieItem(props) {
+  useEffect(() => {
+    console.log("Movie Item:", props.mymovie);
+  }, [props.mymovie]); // Only run this effect when the mymovie prop changes
+
   return (
-        <Navbar bg="dark" data-bs-theme="dark">
-          <Container>
-            <Navbar.Brand href="/">Navbar</Navbar.Brand>
-            <Nav className="me-auto">
-              <Nav.Link href="/">Home</Nav.Link>
-              <Nav.Link href="/create">Create</Nav.Link>
-              <Nav.Link href="/read">Read</Nav.Link>
-            </Nav>
-          </Container>
-      </Navbar>
-  );
-};
-
-export default NavigationBar;
-```
-
-**Set up Routing:** Install React Router to enable navigation between different pages. Wrap the app in `BrowserRouter` and use `Routes` and `Route` components to define different routes for the app:
-
-```bash
-npm install react-router-dom
-```
-
-Update the `App.js` file to include the routing logic. Each route will display a different component when its respective link is clicked:
-
-```jsx
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import NavigationBar from './components/NavigationBar';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Content from './components/Content';
-
-function App() {
-  return (
-    <Router>
-      <NavigationBar />
-      <Routes>
-        <Route path="/home" element={<Content />} />
-        <Route path="/read" element={<h1>Read Component</h1>} />
-        <Route path="/create" element={<h1>Create Component</h1>} />
-      </Routes>
-      <Footer />
-    </Router>
+    <div>
+      <Card>
+        <Card.Header>{props.mymovie.Title}</Card.Header>
+        <Card.Body>
+          <blockquote className="blockquote mb-0">
+            <img src={props.mymovie.Poster} alt={props.mymovie.Title} />
+            <footer>{props.mymovie.Year}</footer>
+          </blockquote>
+        </Card.Body>
+      </Card>
+    </div>
   );
 }
 
-export default App;
+export default MovieItem;
 ```
-## Exercise 6: Client Side Routing
 
-React Router enables "client side routing".
+In this example, every time the `mymovie` prop changes (which happens when new movie data is passed), the `useEffect()` hook logs the new movie details to the console.
 
-In traditional websites, the browser requests a document from a web server, downloads and evaluates CSS and JavaScript assets, and renders the HTML sent from the server. When the user clicks a link, it starts the process all over again for a new page.
+---
 
-Client side routing allows your app to update the URL from a link click without making another request for another document from the server. Instead, your app can immediately render some new UI and make data requests with fetch to update the page with new information.
+## Exercise 3: Adding Bootstrap Cards
 
-Update the App so that it display the Footer component when the URL changes to localhost:3000/read and Header component when the URL of the App changes to localhost:3000/create under the Navigation bar.
+Enhance the `MovieItem` component by using [React Bootstrap Cards](https://react-bootstrap.github.io/docs/components/cards). You can follow the card structure from the official React Bootstrap documentation.
+
+**Expected Output:**  
+Each movie item should be displayed as a card with the movie title as the header, the poster image in the body, and the year at the footer.
+
+---
+### Summary of Learning
+
+By completing these exercises, students should have gained the following knowledge and skills related to React:
+
+1. **Understanding and Utilizing Props**: 
+   - You have learned how to pass data between components using props, a core concept in React. This includes how to render data dynamically and handle child-to-parent communication.
+
+2. **Component Creation and Modularity**: 
+   - You have created reusable function components (`Read`, `Create`, and `MovieItem`), helping you understand the modular design principles of React.
+
+3. **Rendering Data from JSON**:
+   - You practiced rendering data dynamically from a JSON object within your `Read` component, gaining insight into handling and displaying API responses or local data.
+
+4. **State Management and Side Effects**:
+   - You were introduced to the `useEffect` hook, learning how to manage side effects in function components, such as fetching or updating data when certain props change.
+
+By solving these problems, you’ve gained foundational knowledge in React that will help you build more complex and dynamic web applications in the future.
