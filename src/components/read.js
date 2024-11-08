@@ -7,6 +7,7 @@ const Read = () => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
+    
     axios.get('http://localhost:4000/api/movies')
       .then((response) => {
         console.log(response.data);
