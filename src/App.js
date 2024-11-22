@@ -6,12 +6,14 @@ import Footer from './components/footer';
 import Content from './components/content';
 import Read from './components/read';
 import Create from './components/create';
+import Edit  from './components/edit';//import edit
 
 function App() {
   return (
     <Router>
       <NavigationBar />
       <Routes>
+       <Route path='/edit/:id' element={<Edit />} /> 
         <Route path="/" element={<Content />} />
         <Route path="/read" element={<Read />} />
         <Route path="/create" element={<Create />} />
